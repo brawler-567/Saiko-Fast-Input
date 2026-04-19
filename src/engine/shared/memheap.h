@@ -1,0 +1,46 @@
+ 
+ 
+#ifndef ENGINE_SHARED_MEMHEAP_H
+#define ENGINE_SHARED_MEMHEAP_H
+
+#include <cstddef>
+#include <new>
+#include <utility>
+
+class CHeap
+{
+	struct CChunk
+	{
+		char *m_pMemory;
+		char *m_pCurrent;
+		char *m_pEnd;
+		CChunk *m_pNext;
+	};
+
+	enum
+	{
+		 
+		CHUNK_SIZE = 1025 * 64,
+	};
+
+	CChunk *m_pCurrent;
+
+	void Clear();
+	void NewChunk(size_t ChunkSize);
+	void *AllocateFromChunk(unsigned int Size, unsigned Alignment);
+
+public:
+	CHeap();
+	~CHeap();
+	void Reset();
+	void *Allocate(unsigned Size, unsigned Alignment = alignof(std::max_align_t));
+	const char *StoreString(const char *pSrc);
+
+	template<typename T, typename... TArgs>
+	T *Allocate(TArgs &&...Args)
+	{
+		return new(Allocate(sizeof(T), alignof(T))) T(std::forward<TArgs>(Args)...);
+	}
+};
+
+#endif
