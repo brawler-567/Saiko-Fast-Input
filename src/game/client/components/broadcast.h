@@ -1,0 +1,30 @@
+ 
+ 
+#ifndef GAME_CLIENT_COMPONENTS_BROADCAST_H
+#define GAME_CLIENT_COMPONENTS_BROADCAST_H
+
+#include <engine/textrender.h>
+
+#include <game/client/component.h>
+
+class CBroadcast : public CComponent
+{
+	 
+	char m_aBroadcastText[1024];
+	int m_BroadcastTick;
+	float m_BroadcastRenderOffset;
+	STextContainerIndex m_TextContainerIndex;
+
+	void RenderServerBroadcast();
+
+public:
+	int Sizeof() const override { return sizeof(*this); }
+	void OnReset() override;
+	void OnWindowResize() override;
+	void OnRender() override;
+	void OnMessage(int MsgType, void *pRawMsg) override;
+
+	void DoBroadcast(const char *pText);
+};
+
+#endif
