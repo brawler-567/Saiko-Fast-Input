@@ -1,0 +1,25 @@
+ 
+ 
+#ifndef GAME_CLIENT_PICKUP_DATA_H
+#define GAME_CLIENT_PICKUP_DATA_H
+
+#include <base/vmath.h>
+
+struct CNetObj_Pickup;
+struct CNetObj_DDNetPickup;
+struct CNetObj_EntityEx;
+
+class CPickupData
+{
+public:
+	vec2 m_Pos;
+	int m_Type;
+	int m_Subtype;
+	int m_SwitchNumber;
+	int m_Flags;
+};
+
+CPickupData ExtractPickupInfo(int NetObjType, const void *pData, const CNetObj_EntityEx *pEntEx);
+CPickupData ExtractPickupInfoDDNet(const CNetObj_DDNetPickup *pPickup);
+
+#endif  
